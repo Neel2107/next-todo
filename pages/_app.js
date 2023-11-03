@@ -5,7 +5,7 @@ export default function App({ Component, pageProps }) {
     return (
         <>
             <Head>
-                <title>JS Dev - Todo App</title>
+                <title>My Todo App</title>
             </Head>
             <AuthUserProvider>
                 <Component {...pageProps} />

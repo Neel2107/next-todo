@@ -46,9 +46,9 @@ const LoginForm = () => {
     return isLoading || (!isLoading && !!authUser) ? (
         <Loader />
     ) : (
-        <main className="flex lg:h-[100vh]">
-            <div className="w-full lg:w-[60%] p-8 md:p-14 flex items-center justify-center lg:justify-start">
-                <div className="p-8 w-[600px]">
+        <main className="flex lg:h-[100vh] justify-center items-center  bg-zinc-800 text-white">
+            <div className="w-full  p-8 md:p-14 flex items-center justify-center ">
+                <div className="p-14 w-[700px]  bg-zinc-900 rounded-3xl  shadow-2xl">
                     <h1 className="text-6xl font-semibold">Login</h1>
                     <p className="mt-6 ml-1">
                         Don't have an account ?{" "}
@@ -60,10 +60,10 @@ const LoginForm = () => {
                         </Link>
                     </p>
 
-                    <div className="bg-black/[0.05] text-white w-full py-4 mt-10 rounded-full transition-transform hover:bg-black/[0.8] active:scale-90 flex justify-center items-center gap-4 cursor-pointer group">
+                    <div className="bg-white/[0.05] text-white w-full py-4 mt-10 rounded-full transition-transform hover:bg-black/[0.8] active:scale-90 flex justify-center items-center gap-4 cursor-pointer group">
                         <FcGoogle size={22} />
                         <span
-                            className="font-medium text-black group-hover:text-white"
+                            className="font-medium  group-hover:text-white"
                             onClick={signInWithGoogle}
                         >
                             Login with Google
@@ -71,21 +71,21 @@ const LoginForm = () => {
                     </div>
 
                     <form onSubmit={(e) => e.preventDefault()}>
-                        <div className="mt-10 pl-1 flex flex-col">
+                        <div className="mt-10 pl-1 flex flex-col gap-2">
                             <label>Email</label>
                             <input
                                 type="email"
                                 name="email"
-                                className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400"
+                                className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400 rounded-xl text-black  "
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
-                        <div className="mt-10 pl-1 flex flex-col">
+                        <div className="mt-10 pl-1 flex flex-col gap-2">
                             <label>Password</label>
                             <input
                                 type="password"
                                 name="password"
-                                className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400"
+                                className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400 rounded-xl text-black"
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
@@ -98,12 +98,12 @@ const LoginForm = () => {
                     </form>
                 </div>
             </div>
-            <div
+            {/* <div
                 className="w-[40%] bg-slate-400 bg-cover bg-right-top hidden lg:block"
                 style={{
                     backgroundImage: "url('/login-banner.jpg')",
                 }}
-            ></div>
+            ></div> */}
         </main>
     );
 };

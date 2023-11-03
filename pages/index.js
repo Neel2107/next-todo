@@ -33,28 +33,19 @@ export default function Home() {
         }
     }, [authUser, isLoading]);
 
-    /**
-     * Fetches all the todos for a given user ID from Firestore and sets the todos state with the data.
-     *
-     * @param {string} uid - The user ID to fetch todos for.
-     * @return {void}
-     */
+    
     const fetchTodos = async (uid) => {
         try {
-            // Create a Firestore query to fetch all the todos for the user with the given ID.
             const q = query(collection(db, "todos"), where("owner", "==", uid));
 
-            // Execute the query and get a snapshot of the results.
             const querySnapshot = await getDocs(q);
 
-            // Extract the data from each todo document and add it to the data array.
             let data = [];
             querySnapshot.forEach((todo) => {
                 console.log(todo);
                 data.push({ ...todo.data(), id: todo.id });
             });
 
-            // Set the todos state with the data array.
             setTodos(data);
         } catch (error) {
             console.error("An error occured", error);
@@ -69,18 +60,17 @@ export default function Home() {
 
     const addToDo = async () => {
         try {
-            // Add a new todo document to the "todos" collection in Firestore with the current user's ID,
-            // the content of the todo input, and a completed status of false.
+           
             const docRef = await addDoc(collection(db, "todos"), {
                 owner: authUser.uid,
                 content: todoInput,
                 completed: false,
             });
 
-            // After adding the new todo, fetch all todos for the current user and update the state with the new data.
+            
             fetchTodos(authUser.uid);
 
-            // Clear the todo input field.
+            
             setTodoInput("");
         } catch (error) {
             console.error("An error occured", error);
@@ -89,10 +79,10 @@ export default function Home() {
 
     const deleteTodo = async (docId) => {
         try {
-            // Delete the todo document with the given ID from the "todos" collection in Firestore.
+           
             await deleteDoc(doc(db, "todos", docId));
 
-            // After deleting the todo, fetch all todos for the current user and update the state with the new data.
+            
             fetchTodos(authUser.uid);
         } catch (error) {
             console.error("An error occured", error);
@@ -101,15 +91,15 @@ export default function Home() {
 
     const makeAsCompleteHander = async (event, docId) => {
         try {
-            // Get a reference to the todo document with the given ID in the "todos" collection in Firestore.
+           
             const todoRef = doc(db, "todos", docId);
 
-            // Update the "completed" field of the todo document to the value of the "checked" property of the event target.
+            
             await updateDoc(todoRef, {
                 completed: event.target.checked,
             });
 
-            // After updating the todo, fetch all todos for the current user and update the state with the new data.
+           
             fetchTodos(authUser.uid);
         } catch (error) {
             console.error("An error occured", error);
@@ -119,46 +109,47 @@ export default function Home() {
     return !authUser ? (
         <Loader />
     ) : (
-        <main className="">
+        <main className="bg-zinc-800 h-[100vh] text-white overflow-hidden">
             <div
-                className="bg-black text-white w-44 py-4 mt-10 rounded-lg transition-transform hover:bg-black/[0.8] active:scale-90 flex items-center justify-center gap-2 font-medium shadow-md fixed bottom-5 right-5 cursor-pointer"
+                className="bg-zinc-700 text-white w-44 py-4 mt-10 rounded-lg transition-transform hover:bg-black/[0.8] active:scale-90 flex items-center justify-center gap-2 font-medium  fixed bottom-5 right-5 cursor-pointer shadow-xl"
                 onClick={signOut}
             >
                 <GoSignOut size={18} />
                 <span>Logout</span>
             </div>
             <div className="max-w-3xl mx-auto mt-10 p-8">
-                <div className="bg-white -m-6 p-3 sticky top-0">
+                <div className="  p-3 sticky top-0">
                     <div className="flex justify-center flex-col items-center">
-                        <span className="text-7xl mb-10">📝</span>
-                        <h1 className="text-5xl md:text-7xl font-bold">
-                            ToooDooo's
+                       
+                        <h1 className="text-5xl md:text-6xl font-bold">
+                            My Tasks
                         </h1>
                     </div>
-                    <div className="flex items-center gap-2 mt-10">
+                    <div className="flex items-center gap-2 mt-10 ">
                         <input
-                            placeholder={`👋 Hello ${authUser.username}, What to do Today?`}
+                            placeholder={` Hey ${authUser.username}, Enter your Task..`}
                             type="text"
-                            className="font-semibold placeholder:text-gray-500 border-[2px] border-black h-[60px] grow shadow-sm rounded-md px-4 focus-visible:outline-yellow-400 text-lg transition-all duration-300"
+                            className="font-semibold placeholder:text-gray-500 border-[2px] border-black h-[60px] grow shadow-sm rounded-xl px-4 focus-visible:outline-blue-400 text-lg transition-all duration-300 text-black"
                             autoFocus
                             value={todoInput}
                             onChange={(e) => setTodoInput(e.target.value)}
                             onKeyUp={(e) => onKeyUp(e)}
                         />
                         <button
-                            className="w-[60px] h-[60px] rounded-md bg-black flex justify-center items-center cursor-pointer transition-all duration-300 hover:bg-black/[0.8]"
+                            className="w-[60px] h-[60px]  bg-zinc-950 flex justify-center items-center cursor-pointer transition-all duration-300 hover:bg-black/[0.8] hover:bg-zinc-700  rounded-xl"
                             onClick={addToDo}
                         >
-                            <AiOutlinePlus size={30} color="#fff" />
+                            <AiOutlinePlus size={30}  color="#fff" />
                         </button>
                     </div>
                 </div>
-                <div className="my-10">
+                <div className="my-5 bg-zinc-700 p-5 rounded-xl shadow-2xl flex
+                flex-col gap-2 ">
                     {todos.length > 0 &&
                         todos.map((todo) => (
                             <div
                                 key={todo.id}
-                                className="flex items-center justify-between mt-4"
+                                className="flex items-center justify-between "
                             >
                                 <div className="flex items-center gap-3">
                                     <input
@@ -191,7 +182,7 @@ export default function Home() {
                         ))}
 
                     {todos.length < 1 && (
-                        <span className="text-center w-full block text-2xl font-medium text-gray-400 mt-28">{`🥹 You don't have todo's`}</span>
+                        <span className="text-center w-full block text-2xl font-medium text-gray-400  ">{`Add your tasks now..`}</span>
                     )}
                 </div>
             </div>
